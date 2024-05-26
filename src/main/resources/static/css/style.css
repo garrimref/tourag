@@ -1,0 +1,74 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #303030;
+    word-spacing: 2px;
+}
+a {
+    text-decoration: none;
+}
+ul {
+    list-style: none;
+}
+header {
+    margin-bottom: 30px;
+    background-color: #F7F0F5;
+}
+.container {
+    background-color: #F7F0F5;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    max-width: 980px;
+}
+header .container {
+    display: flex;
+    justify-content: space-between;
+}
+.header-logo {
+    color: inherit;
+    line-height: 1;
+    font-weight: bold;
+}
+.header-logo img {
+    float: left;
+}
+.header-logo-text {
+    width: min-content;
+    font-size: 20px;
+    display: table-cell;
+    height: 96px;
+    vertical-align: middle;
+    text-align: center;
+}
+.menu-header-container {
+    display:flex;
+}
+.menu-header-container li {
+    display: inline-block;
+}
+.menu-header-container ul {
+    align-items: center;
+    height: 100%;
+    display: flex;
+}
+#menu-header a {
+    color: inherit;
+    display: block;
+    padding: 10px 17px;
+    font-size: 13px;
+    text-transform: uppercase;
+    position: relative;
+    line-height: 1;
+    transition: 0.3s;
+}
+#menu-header a:hover {
+    background-color: #2D2B42;
+    color: #F7F0F5;
+}
