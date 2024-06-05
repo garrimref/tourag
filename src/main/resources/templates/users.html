@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Profile</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="icon" th:href="@{images/logo-icon.png}" alt="">
+    <script type="text/javascript" th:src="@{js/script.js}"></script>
+</head>
+<body>
+<header>
+    <div class="container">
+        <a class="header-logo" th:href="@{/}">
+            <img th:src="@{images/logo-header.png}" alt="">
+            <div class="header-logo-text">SUZAKU Travel</div>
+        </a>
+        <div class="menu-header-container">
+            <ul id="menu-header" class="menu">
+                <li><a th:href="@{/}">Каталог</a></li>
+                <li><a th:href="@{/login}">Увійти</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Вийти"/>
+</form>
+<p>Список користувачів</p>
+<table>
+    <thread>
+        <tr>
+            <th>Ім'я</th>
+            <th>Пошта</th>
+        </tr>
+    </thread>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

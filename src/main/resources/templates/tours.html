@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Tours</title>
+    <link rel="icon" th:href="@{images/logo-icon.png}" alt="" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{js/script.js}"></script>
+</head>
+<body>
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a th:href="@{/}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+            <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">Suzaku Travel</span>
+    </a>
+
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a th:href="@{/tours}" class="nav-link active" aria-current="page" >Тури</a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/users}" class="nav-link">Спільнота</a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/faq}" class="nav-link">Питання</a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/}" class="nav-link">Про нас</a>
+        </li>
+    </ul>
+</header>
+
+<a class="btn btn-primary" th:href="@{/tours/create}" role="button">Створити новий тур</a>
+
+<div class="row row-cols-1 row-cols-md-3">
+    <div class="col mb-4" th:each="tour : ${tours}">
+        <div class="card h-100">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${tour.getName()}"></h5>
+                <p class="card-text" th:text="${tour.getDescription()}"></p>
+                <p th:text="${#dates.format(tour.getDate(), 'dd/MM/yyyy')}"></p>
+                <p class="card-text">
+                    <small class="text-muted" th:text="${tour.getAuthorName()}"></small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
