@@ -8,6 +8,8 @@ import com.reltour.tourag.repositories.AchievementRepository;
 import com.reltour.tourag.repositories.UserRepository;
 import com.reltour.tourag.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -84,5 +86,10 @@ public class UserServiceImpl implements UserService {
     public Set<Achievement> getUserAchievements(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         return user.getAchievements();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email);
     }
 }

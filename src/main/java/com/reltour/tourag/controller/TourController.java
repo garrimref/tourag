@@ -1,10 +1,7 @@
 package com.reltour.tourag.controller;
 
-import com.reltour.tourag.domain.Tour;
 import com.reltour.tourag.domain.User;
 import com.reltour.tourag.dto.TourDto;
-import com.reltour.tourag.dto.UserDto;
-import com.reltour.tourag.security.CustomUserDetails;
 import com.reltour.tourag.services.TourService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,7 +15,7 @@ import java.util.List;
 @RequestMapping("/tours")
 public class TourController {
 
-    private TourService tourService;
+    private final TourService tourService;
 
     public TourController(TourService tourService) {
         this.tourService = tourService;
