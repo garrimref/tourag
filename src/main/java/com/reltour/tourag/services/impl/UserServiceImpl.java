@@ -1,8 +1,10 @@
 package com.reltour.tourag.services.impl;
 
+import com.reltour.tourag.domain.Achievement;
 import com.reltour.tourag.domain.Role;
 import com.reltour.tourag.domain.User;
 import com.reltour.tourag.dto.UserDto;
+import com.reltour.tourag.repositories.AchievementRepository;
 import com.reltour.tourag.repositories.UserRepository;
 import com.reltour.tourag.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +14,25 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final AchievementRepository achievementRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, AchievementRepository achievementRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.achievementRepository = achievementRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public UserDto getUserById(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         return convertToDTO(user);
     }
 
@@ -64,5 +69,20 @@ public class UserServiceImpl implements UserService {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         return userDto;
+    }
+
+    public void addAchievementToUser(Long userId, Long achievementId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Achievement achievement = achievementRepository.findById(achievementId)
+                .orElseThrow(() -> new RuntimeException("Achievement not found"));
+
+        user.getAchievements().add(achievement);
+        userRepository.save(user);
+    }
+
+    public Set<Achievement> getUserAchievements(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getAchievements();
     }
 }

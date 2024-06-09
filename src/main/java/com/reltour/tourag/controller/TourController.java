@@ -10,10 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,14 +32,14 @@ public class TourController {
         return "tours";
     }
 
-    @GetMapping("/tours/create")
+    @GetMapping("/create")
     public String showTourCreateForm(Model model){
         TourDto tourDto = new TourDto();
         model.addAttribute("tour", tourDto);
         return "tour_create";
     }
 
-    @PostMapping("/tours/create")
+    @PostMapping("/create")
     public String createTour(@AuthenticationPrincipal User user, @ModelAttribute("tour") TourDto tourDto, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()){
             model.addAttribute("tour", tourDto);

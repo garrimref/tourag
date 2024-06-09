@@ -2,35 +2,39 @@ package com.reltour.tourag.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-
-    @Column(nullable = false)
+    @NotNull
     private String firstName;
-    @Column(nullable = false)
+    @NotNull
     private String lastName;
-
     @Column(nullable = false, unique = true)
     @Email
     private String email;
-    @Column(nullable = false)
+    @NotNull
     private String password;
-
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_achievement",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_id")
+    )
+    private Set<Achievement> achievements = new HashSet<>();
 
     public Set<Role> getRoles() {
         return roles;
@@ -111,5 +115,13 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Achievement> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(Set<Achievement> achievements) {
+        this.achievements = achievements;
     }
 }

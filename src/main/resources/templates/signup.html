@@ -7,20 +7,9 @@
     <script type="text/javascript" th:src="@{js/script.js}"></script>
 </head>
 <body>
-<header>
-    <div class="container">
-        <a class="header-logo" th:href="@{/}">
-            <img th:src="@{images/logo-header.png}" alt="">
-            <div class="header-logo-text">SUZAKU Travel</div>
-        </a>
-        <div class="menu-header-container">
-            <ul id="menu-header" class="menu">
-                <li><a th:href="@{/}">Каталог</a></li>
-                <li><a th:href="@{/login}">Увійти</a></li>
-            </ul>
-        </div>
-    </div>
-</header>
+
+<header th:insert="index.html :: header"> </header>
+
 <main>
     <div class="container">
         <div class="content-wrapper">
