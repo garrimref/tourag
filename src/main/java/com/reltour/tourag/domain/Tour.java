@@ -19,6 +19,7 @@ public class Tour {
 
     private String description;
 
+    private String filename;
     private String location;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
@@ -41,6 +42,9 @@ public class Tour {
     public void setAuthor(User author) {
         this.author = author;
     }
+    public String getAuthorName() {
+        return author.getLastName() + " " + author.getFirstName();
+    }
 
     public String getName() {
         return name;
@@ -56,6 +60,14 @@ public class Tour {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public String getLocation() {
