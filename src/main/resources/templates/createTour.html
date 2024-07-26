@@ -7,9 +7,9 @@
 </head>
 <body>
 
-<header th:insert="~{index.html :: header}"> </header>
+<header th:insert="~{index.html :: header}"></header>
 
-<form  class="w-75 m-auto" th:action="@{/tours/create}" enctype="multipart/form-data" th:object="${tour}" method="post">
+<form class="w-75 m-auto" th:action="@{/tours/create}" enctype="multipart/form-data" th:object="${tour}" method="post">
     <div class="mb-3">
         <label for="name">Назва туру</label>
         <input type="text" class="form-control" id="name" th:field="*{name}">
@@ -22,13 +22,14 @@
         <label for="location">Локація</label>
         <textarea class="form-control" id="location" rows="3" th:field="*{location}"></textarea>
     </div>
-    <div class="form-outline datepicker-disable-past mb-3 w-25" data-mdb-input-init="" data-mdb-input-initialized="true" data-mdb-datepicker-initialized="true">
+    <div class="form-outline datepicker-disable-past mb-3 w-25" data-mdb-input-init="" data-mdb-input-initialized="true"
+         data-mdb-datepicker-initialized="true">
         <label for="datepicker" class="form-label">Оберіть дату</label>
         <input type="date" class="form-control form-icon-trailing" id="datepicker" th:field="*{date}">
     </div>
     <div class="mb-3">
         <div class="custom-file">
-            <input type="file" class="custom-file-input" id="file" name="file" >
+            <input type="file" class="custom-file-input" id="file" name="file">
             <label class="custom-file-label" for="file">Оберіть зображення</label>
         </div>
     </div>

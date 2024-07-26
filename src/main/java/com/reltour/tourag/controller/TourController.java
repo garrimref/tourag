@@ -1,5 +1,7 @@
 package com.reltour.tourag.controller;
 
+import com.reltour.tourag.common.FileTools;
+import com.reltour.tourag.domain.Role;
 import com.reltour.tourag.domain.Tour;
 import com.reltour.tourag.domain.User;
 import com.reltour.tourag.services.TourService;
@@ -13,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,23 +28,33 @@ public class TourController {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Value("bigNoneImage.png")
+    private String noneImagePath;
+
+
     public TourController(TourService tourService) {
         this.tourService = tourService;
     }
 
     @GetMapping("/tours")
     public String tours(Model model) {
-
         List<Tour> tours = tourService.findAllTours();
         model.addAttribute("tours", tours);
         return "tours";
     }
 
+    @GetMapping("/tours/{tour}")
+    public String tours(@PathVariable Tour tour,@AuthenticationPrincipal User currentUser, Model model) {
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("tour", tour);
+        return "tourProfile";
+    }
+
     @GetMapping("/tours/create")
-    public String showTourCreateForm(Model model){
+    public String showTourCreateForm(Model model) {
         Tour tour = new Tour();
         model.addAttribute("tour", tour);
-        return "tourCreate";
+        return "createTour";
     }
 
     @PostMapping("/tours/create")
@@ -50,29 +64,74 @@ public class TourController {
             BindingResult bindingResult,
             Model model,
             @RequestParam("file") MultipartFile file
-            ) throws IOException {
-        if(bindingResult.hasErrors()){
+    ) throws IOException {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("tour", tour);
-            return "tourCreate";
+            return "createTour";
         }
 
         if (!file.isEmpty()) {
-            File uploadDir = new File(uploadPath);
-
-            if(!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-            tour.setFilename(resultFilename);
+            tour.setFilename(extractFilename(file));
+        } else {
+            tour.setFilename(noneImagePath);
         }
 
-        tour.setAuthor(user);
+        tourService.saveTour(user, tour);
+        return "redirect:/tours";
+    }
+
+    @GetMapping("/tours/edit/{tour}")
+    public String showEditForm(@AuthenticationPrincipal User user, @PathVariable Tour tour, Model model) {
+        if (tour.getAuthor().equals(user) || user.getRoles().contains(Role.ADMIN)) {
+            model.addAttribute(tour);
+            return "editTour";
+        }
+        return "redirect:/tours";
+    }
+    @PostMapping("/tours/edit")
+    public String updateTour(
+            @RequestParam String name,
+            @RequestParam String description,
+            @RequestParam String location,
+            @RequestParam String date,
+            @RequestParam("tourId") Tour tour,
+            @RequestParam("file") MultipartFile file) throws IOException, ParseException {
+
+        tour.setName(name);
+        tour.setDescription(description);
+        tour.setLocation(location);
+        if (!date.isEmpty()) {
+            tour.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(date));
+        }
+
+        if (!file.isEmpty()) {
+            tour.setFilename(extractFilename(file));
+        }
+
         tourService.saveTour(tour);
         return "redirect:/tours";
+    }
 
+    @GetMapping("/tours/delete/{tour}")
+    public String deleteTour(@AuthenticationPrincipal User user, @PathVariable Tour tour) {
+        if (tour.getAuthor().equals(user) || user.getRoles().contains(Role.ADMIN)) {
+            tourService.deleteById(tour.getId());
+        }
+        return "redirect:/tours";
+    }
+
+    public String extractFilename(MultipartFile file) throws IOException {
+        File uploadDir = new File(uploadPath);
+
+        if(!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+        file.transferTo(new File(uploadPath + "/" + resultFilename));
+        return resultFilename;
     }
 }
+

@@ -11,7 +11,7 @@
 	<groupId>com.reltour</groupId>
 	<artifactId>tourag</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>tourag</name>
 	<description>tourag</description>

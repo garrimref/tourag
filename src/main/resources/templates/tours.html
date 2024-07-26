@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Tours</title>
     <link rel="icon" th:href="@{images/logo-icon.png}" alt="">
@@ -15,22 +15,23 @@
     </div>
 </div>
 
-<div class="row row-cols-1 row-cols-md-3 mx-3">
+<div class="row row-cols-1 row-cols-md-4 mx-3">
     <div class="col mb-4" th:each="tour : ${tours}">
         <div class="card h-100">
-            <img th:if="${tour.filename}" th:src="@{/img/{filename}(filename = ${tour.filename})}" class="card-img-top" alt="...">
+            <img width="350px" height="150px !important" th:if="${tour.filename}" th:src="@{/img/{filename}(filename = ${tour.filename})}" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title" th:text="${tour.getName()}"></h5>
                 <p class="card-text" th:text="${tour.getDescription()}"></p>
                 <p th:text="${#dates.format(tour.getDate(), 'dd/MM/yyyy')}"></p>
                 <p class="card-text">
-                    <small class="text-muted" th:text="${tour.getAuthorName()}"></small>
+                    <small class="text-muted" th:text="${tour.getAuthorFullName()}"></small>
                 </p>
             </div>
             <div class="card-footer">
                 <div class="col text-end">
-                    <a class="btn btn-danger" href="#">Видалити</a>
-                    <a class="btn btn-secondary" href="#">Редагувати</a>
+                    <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-danger" th:href="@{/tours/delete/{id}(id = ${tour.id})}">Видалити</a>
+                    <a sec:authorize="hasAuthority('ADMIN')"class="btn btn-secondary" th:href="@{/tours/edit/{id}(id = ${tour.id})}">Редагувати</a>
+                    <a class="btn btn-primary" th:href="@{/tours/{id}(id = ${tour.id})}">Перейти</a>
                 </div>
             </div>
         </div>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <title>Suzaku Travel</title>
+  <link rel="icon" th:href="@{images/logo-icon.png}" alt="">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<header th:insert="~{index.html :: header}"></header>
+
+
+<form class="w-75 m-auto" th:action="@{/admin/achievements/create}" th:object="${achievement}"
+      method="post">
+  <div class="mb-3">
+    <label for="name">Назва</label>
+    <input type="text" class="form-control" id="name" name="name" th:field="*{name}">
+  </div>
+  <div class="mb-3">
+    <label for="description">Опис</label>
+    <textarea class="form-control" id="description" rows="3" name="description" th:field="*{description}"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Підтвердити</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

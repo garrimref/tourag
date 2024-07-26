@@ -24,17 +24,27 @@ public class User implements UserDetails {
     private String email;
     @NotNull
     private String password;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof User && this.email.equals(((User) obj).email);
+    }
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_achievement",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "achievement_id")
     )
+
     private Set<Achievement> achievements = new HashSet<>();
+
+    private String AvatarFilename;
 
     public Set<Role> getRoles() {
         return roles;
@@ -123,5 +133,17 @@ public class User implements UserDetails {
 
     public void setAchievements(Set<Achievement> achievements) {
         this.achievements = achievements;
+    }
+
+    public String getAvatarFilename() {
+        return AvatarFilename;
+    }
+
+    public void setAvatarFilename(String avatarFilename) {
+        AvatarFilename = avatarFilename;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 }

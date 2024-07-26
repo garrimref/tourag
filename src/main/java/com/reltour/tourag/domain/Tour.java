@@ -42,8 +42,8 @@ public class Tour {
     public void setAuthor(User author) {
         this.author = author;
     }
-    public String getAuthorName() {
-        return author.getLastName() + " " + author.getFirstName();
+    public String getAuthorFullName() {
+        return author.getFullName();
     }
 
     public String getName() {

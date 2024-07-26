@@ -33,9 +33,8 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDto getUserById(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        return convertToDTO(user);
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
@@ -46,7 +45,19 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRoles(Collections.singleton(Role.USER));
+        user.setAvatarFilename(userDto.getAvatarFilename());
         userRepository.save(user);
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        //tourService.deleteAllByUserId(id);
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -70,6 +81,9 @@ public class UserServiceImpl implements UserService {
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
+        userDto.setAchievements(user.getAchievements());
+        userDto.setRoles(user.getRoles());
+        userDto.setAvatarFilename(user.getAvatarFilename());
         return userDto;
     }
 

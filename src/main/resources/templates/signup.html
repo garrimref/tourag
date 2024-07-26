@@ -11,7 +11,7 @@
 <header th:insert="~{index.html :: header}"> </header>
 
 <main class="form-signup w-100 m-auto">
-    <form th:action="@{/signup}"  th:object="${user}" method="post">
+    <form th:action="@{/signup}" enctype="multipart/form-data" th:object="${user}" method="post">
         <img class="mb-4" th:src="@{images/logo-header.png}" alt="">
         <h1 class="h3 mb-3 fw-normal">Реєстрація</h1>
 
@@ -33,9 +33,12 @@
                 <input type="password" class="form-control" id="password" placeholder="Password" name="password" th:field="*{password}">
                 <label for="password">Пароль</label>
         </div>
-
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="file" name="file" >
+            <label class="custom-file-label" for="file">Оберіть зображення</label>
+        </div>
         <br>
-        <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+        <button class="btn btn-primary w-100 py-2" type="submit">Зареєструватись</button>
         <p class="mt-5 mb-3 text-body-secondary">© 2024</p>
     </form>
 </main>
